@@ -4,6 +4,11 @@ const galleryHeader = document.querySelector('.gallery-header');
 const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
+const chkBtn = document.getElementById('check-btn')
+
+chkBtn.addEventListener('change', () => {
+  console.log('on');
+})
 // selected image 
 let sliders = [];
 
@@ -49,19 +54,38 @@ const showImages = (images) => {
 
 
 let slideIndex = 0;
+
+
 const selectItem = (event, img) => {
+  // console.log(img);
+
   let element = event.target;
   element.classList.add('added');
 
   let item = sliders.indexOf(img);
   if (item === -1) {
+    // console.log('Single link', img);
     sliders.push(img);
+    console.log(sliders)
   } else {
-    alert('Hey, Already added !')
+    element.classList.remove('added');
+    // alert('Hey, Already added !')
+    console.log('Single link to remove = ', img)
+
+
+    let value = sliders.filter((slider) =>{
+      console.log('Bool value = ', slider !== img);
+      return slider !== img
+    })
+
     // sliders.shift(img);
-    // console.log(sliders);
+    console.log('Final = ', value);
+
+    sliders = value
   }
 }
+
+
 var timer
 
 const createSlider = () => {
