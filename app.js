@@ -42,14 +42,6 @@ const showImages = (images) => {
     div.innerHTML = `<img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div);
   }
-
-  // images.forEach(image => {
-  //   let div = document.createElement('div');
-  //   div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-  //   div.innerHTML = `<img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
-  //   gallery.appendChild(div);
-  // });
-
 }
 
 
@@ -64,22 +56,13 @@ const selectItem = (event, img) => {
 
   let item = sliders.indexOf(img);
   if (item === -1) {
-    // console.log('Single link', img);
     sliders.push(img);
-    console.log(sliders)
   } else {
     element.classList.remove('added');
-    // alert('Hey, Already added !')
-    console.log('Single link to remove = ', img)
-
 
     let value = sliders.filter((slider) =>{
-      console.log('Bool value = ', slider !== img);
       return slider !== img
     })
-
-    // sliders.shift(img);
-    console.log('Final = ', value);
 
     sliders = value
   }
