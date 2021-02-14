@@ -28,7 +28,7 @@ const showImages = (images) => {
   gallery.innerHTML = '';
   // show gallery title
   galleryHeader.style.display = 'flex';
-  
+
   for (let i = 0; i < images.length; i++) {
     const image = images[i];
     // console.log(image.id);
@@ -52,7 +52,7 @@ let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
   element.classList.add('added');
- 
+
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
@@ -65,40 +65,44 @@ const selectItem = (event, img) => {
 var timer
 
 const createSlider = () => {
+
+  let duration = document.getElementById('duration').value || 1000;
+
   // check slider image length
   if (sliders.length < 2) {
     alert('Select at least 2 image.')
     return;
   }
 
-  // crate slider previous next area
-  sliderContainer.innerHTML = '';
-  const prevNext = document.createElement('div');
-  prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
-  prevNext.innerHTML = ` 
-  <span class="prev" onclick="changeItem(-1)"><i class="fas fa-chevron-left"></i></span>
-  <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
-  `;
+  if (duration <= 0) {
+    alert(duration);
+  } else {
+      // crate slider previous next area
+    sliderContainer.innerHTML = '';
+    const prevNext = document.createElement('div');
+    prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
+    prevNext.innerHTML = ` 
+    <span class="prev" onclick="changeItem(-1)"><i class="fas fa-chevron-left"></i></span>
+    <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
+    `;
 
-  sliderContainer.appendChild(prevNext);
+    sliderContainer.appendChild(prevNext);
+    document.querySelector('.main').style.display = 'block';
+    // hide image aria
+    imagesArea.style.display = 'none';
+    sliders.forEach(slide => {
+      let item = document.createElement('div')
+      item.className = "slider-item";
+      item.innerHTML = `<img class="w-100" src="${slide}" alt="">`;
+      sliderContainer.appendChild(item)
+    })
 
-  document.querySelector('.main').style.display = 'block';
-  // hide image aria
-  imagesArea.style.display = 'none';
-  let duration = document.getElementById('duration').value || 1000;
-  sliders.forEach(slide => {
-    let item = document.createElement('div')
-    item.className = "slider-item";
-    item.innerHTML = `<img class="w-100" src="${slide}" alt="">`;
-    sliderContainer.appendChild(item)
-  })
-
-  changeSlide(0)
-  timer = setInterval(function () {
-    slideIndex++;
-    changeSlide(slideIndex);
-  }, duration);
-
+    changeSlide(0)
+    timer = setInterval(function () {
+      slideIndex++;
+      changeSlide(slideIndex);
+    }, duration);
+  }
 }
 
 // change slider index 
@@ -133,8 +137,19 @@ searchBtn.addEventListener('click', function () {
   const search = document.getElementById('search');
   getImages(search.value)
   sliders.length = 0;
-})
+});
+
+const searchEnterBtn = document.getElementById('search');
+searchEnterBtn.addEventListener('keyup', function(event) {
+  if (event.keyCode === 13) {
+    document.querySelector('.main').style.display = 'none';
+    clearInterval(timer);
+    const search = document.getElementById('search');
+    getImages(search.value)
+    sliders.length = 0;
+   }
+});
 
 sliderBtn.addEventListener('click', function () {
   createSlider()
-})
+});
